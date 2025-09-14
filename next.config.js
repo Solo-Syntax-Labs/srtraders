@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config) => {
-    config.resolve.alias["@"] = path.resolve(__dirname, "src");
-    return config;
-  },
   serverExternalPackages: ['googleapis'],
   images: {
     domains: ['lh3.googleusercontent.com'],
