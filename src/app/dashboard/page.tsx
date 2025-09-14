@@ -20,7 +20,7 @@ interface DashboardStats {
 
 interface DashboardSummary {
   hasInvoices: boolean
-  mostRecentInvoice: any
+  mostRecentInvoice: { created_at: string } | null
   profitTrend: 'positive' | 'negative'
 }
 

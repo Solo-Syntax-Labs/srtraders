@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
             .select('*')
             .eq('email', credentials.email)
             .eq('auth_provider', 'email')
-            .single()
+            .single() as { data: { id: string; email: string; full_name: string | null; avatar_url: string | null; password_hash: string | null; is_active: boolean } | null; error: any }
 
           if (error || !user) {
             return null
@@ -85,7 +85,7 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === 'google') {
         try {
           // Check if user exists with this Google ID
-          let { data: existingUser, error } = await supabase
+          const { data: existingUser, error } = await supabase
             .from('users')
             .select('*')
             .eq('google_id', account.providerAccountId)
