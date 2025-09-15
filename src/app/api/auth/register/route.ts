@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase/server'
+import { InsertUser } from '@/lib/supabase/types'
 import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
@@ -33,20 +34,22 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(password, 12)
 
     // Create user in our users table
-    const { data: newUser, error: userError } = await supabase
-      .from('users')
-      .insert({
-        email,
-        password_hash: hashedPassword,
-        full_name: fullName,
-        auth_provider: 'email',
-        email_verified: false,
-        is_active: true,
-      })
+    const userData: InsertUser = {
+      email,
+      password_hash: hashedPassword,
+      full_name: fullName,
+      auth_provider: 'email',
+      email_verified: false,
+      is_active: true,
+    }
+
+    const { data: newUser, error: userError } = await (supabase
+      .from('users') as any)
+      .insert(userData)
       .select()
       .single()
 
-    if (userError) {
+    if (userError || !newUser) {
       return NextResponse.json(
         { message: 'Failed to create user account' },
         { status: 500 }

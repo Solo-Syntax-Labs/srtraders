@@ -144,50 +144,6 @@ export interface Database {
           updated_at?: string
         }
       }
-      documents: {
-        Row: {
-          id: string
-          invoice_number: string
-          date: string
-          price: number
-          weight: number
-          product_id: string | null
-          quality: string
-          status: 'pending' | 'processing' | 'completed' | 'cancelled'
-          notes: string | null
-          created_by: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          invoice_number: string
-          date: string
-          price: number
-          weight: number
-          product_id?: string | null
-          quality: string
-          status?: 'pending' | 'processing' | 'completed' | 'cancelled'
-          notes?: string | null
-          created_by?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          invoice_number?: string
-          date?: string
-          price?: number
-          weight?: number
-          product_id?: string | null
-          quality?: string
-          status?: 'pending' | 'processing' | 'completed' | 'cancelled'
-          notes?: string | null
-          created_by?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
       products: {
         Row: {
           id: string
@@ -317,12 +273,6 @@ export type Party = Database['public']['Tables']['parties']['Row']
 export type InsertParty = Database['public']['Tables']['parties']['Insert']
 export type UpdateParty = Database['public']['Tables']['parties']['Update']
 
-export type Invoice = Database['public']['Tables']['invoices']['Row']
-export type InsertInvoice = Database['public']['Tables']['invoices']['Insert']
-export type UpdateInvoice = Database['public']['Tables']['invoices']['Update']
-
-export type Document = Database['public']['Tables']['documents']['Row']
-export type InsertDocument = Database['public']['Tables']['documents']['Insert']
 export type UpdateUser = Database['public']['Tables']['users']['Update']
 
 export type GoogleDriveToken = Database['public']['Tables']['google_drive_tokens']['Row']

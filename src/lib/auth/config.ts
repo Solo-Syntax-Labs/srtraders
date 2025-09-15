@@ -3,12 +3,28 @@ import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
-import { Database } from '../supabase/types'
+import { Database } from '@/lib/supabase/types'
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
+
+export interface User {
+  id: string
+  email: string
+  name: string
+  image: string
+}
+
+export interface Session {
+  user: {
+    id?: string
+    email?: string
+    name?: string
+    image?: string
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
