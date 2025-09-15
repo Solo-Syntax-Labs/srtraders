@@ -4,11 +4,9 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['googleapis'],
   images: {
     domains: ['lh3.googleusercontent.com'],
-    unoptimized: true, // Required for static export
   },
-  output: 'export', // Enable static HTML export
-  trailingSlash: true, // Optional: adds trailing slashes to URLs
-  skipTrailingSlashRedirect: true,
+  // Note: Static export disabled because app uses API routes
+  // output: 'export' is incompatible with API routes
 };
 
 export default nextConfig;
