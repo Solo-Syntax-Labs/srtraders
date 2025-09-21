@@ -38,8 +38,8 @@ interface InvoiceFormData {
   purchase_doc: string
   toll_doc: string
   weight_report: string
-  consolidated_doc: string
   classification_report: string
+  tds: string
 }
 
 interface UploadedDocument {
@@ -75,8 +75,8 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
     purchase_doc: '',
     toll_doc: '',
     weight_report: '',
-    consolidated_doc: '',
-    classification_report: ''
+    classification_report: '',
+    tds: ''
   })
   const [calculatedProfit, setCalculatedProfit] = useState<number>(0)
   const [documents, setDocuments] = useState<UploadedDocument[]>([])
@@ -103,8 +103,8 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
           purchase_doc: invoice.purchase_doc || '',
           toll_doc: invoice.toll_doc || '',
           weight_report: invoice.weight_report || '',
-          consolidated_doc: invoice.consolidated_doc || '',
-          classification_report: invoice.classification_report || ''
+          classification_report: invoice.classification_report || '',
+          tds: invoice.tds ? invoice.tds.toString() : ''
         })
         
         // Calculate initial profit
@@ -206,7 +206,6 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         'purchase': 'purchase_doc',
         'toll': 'toll_doc',
         'weight_report': 'weight_report',
-        'consolidated': 'consolidated_doc',
         'classification': 'classification_report'
       }
       
@@ -253,7 +252,6 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         'purchase': 'purchase_doc',
         'toll': 'toll_doc',
         'weight_report': 'weight_report',
-        'consolidated': 'consolidated_doc',
         'classification': 'classification_report'
       }
       
@@ -330,8 +328,8 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
           purchase_doc: formData.purchase_doc || null,
           toll_doc: formData.toll_doc || null,
           weight_report: formData.weight_report || null,
-          consolidated_doc: formData.consolidated_doc || null,
           classification_report: formData.classification_report || null,
+          tds: formData.tds ? Number(formData.tds) : null,
         }),
       })
 
@@ -539,6 +537,21 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="tds">TDS (%)</Label>
+                  <Input
+                    id="tds"
+                    name="tds"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max="100"
+                    value={formData.tds}
+                    onChange={handleInputChange}
+                    placeholder="0.00"
+                  />
+                </div>
+
                 {(formData.sale_cost || formData.purchase_cost) && (
                   <div className="space-y-2">
                     <Label>Calculated Profit</Label>
@@ -592,7 +605,6 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
                   { key: 'purchase', label: 'Purchase Document', field: 'purchase_doc' },
                   { key: 'toll', label: 'Toll Document', field: 'toll_doc' },
                   { key: 'weight_report', label: 'Weight Report', field: 'weight_report' },
-                  { key: 'consolidated', label: 'Consolidated Document', field: 'consolidated_doc' },
                   { key: 'classification', label: 'Classification Report', field: 'classification_report' }
                 ].map((docConfig) => {
                   const existingDoc = documents.find(d => d.type === docConfig.key)

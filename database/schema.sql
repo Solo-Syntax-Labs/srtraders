@@ -40,18 +40,19 @@ CREATE TABLE public.invoices (
   purchase_doc TEXT, -- DocumentID reference
   toll_doc TEXT, -- DocumentID reference
   weight_report TEXT, -- DocumentID reference
-  consolidated_doc TEXT, -- DocumentID reference
   hsn_code TEXT, -- HSN code
   weight DECIMAL(10, 2) NOT NULL, -- Weight in KG
   profit DECIMAL(12, 2), -- Calculated profit
   sale_cost DECIMAL(12, 2), -- Sale cost
   purchase_cost DECIMAL(12, 2), -- Purchase cost
+  tds DECIMAL(5, 2) DEFAULT 0, -- TDS percentage
   sale_party_id UUID REFERENCES public.parties(id), -- Sale party reference
   purchase_party_id UUID REFERENCES public.parties(id), -- Purchase party reference
   status TEXT DEFAULT 'payment_pending' CHECK (status IN ('payment_pending', 'completed')),
   debit_note TEXT, -- Debit note
   credit_note TEXT, -- Credit note
   classification_report TEXT, -- DocumentID reference
+  consolidated_report_id TEXT, -- Generated consolidated PDF document ID
   created_by UUID REFERENCES public.users(id),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()

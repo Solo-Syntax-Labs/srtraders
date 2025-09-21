@@ -81,18 +81,19 @@ export interface Database {
           purchase_doc: string | null
           toll_doc: string | null
           weight_report: string | null
-          consolidated_doc: string | null
           hsn_code: string | null
           weight: number
           profit: number | null
           sale_cost: number | null
           purchase_cost: number | null
+          tds: number | null
           sale_party_id: string | null
           purchase_party_id: string | null
           status: 'payment_pending' | 'completed'
           debit_note: string | null
           credit_note: string | null
           classification_report: string | null
+          consolidated_report_id: string | null
           created_by: string | null
           created_at: string
           updated_at: string
@@ -104,18 +105,19 @@ export interface Database {
           purchase_doc?: string | null
           toll_doc?: string | null
           weight_report?: string | null
-          consolidated_doc?: string | null
           hsn_code?: string | null
           weight: number
           profit?: number | null
           sale_cost?: number | null
           purchase_cost?: number | null
+          tds?: number | null
           sale_party_id?: string | null
           purchase_party_id?: string | null
           status?: 'payment_pending' | 'completed'
           debit_note?: string | null
           credit_note?: string | null
           classification_report?: string | null
+          consolidated_report_id?: string | null
           created_by?: string | null
           created_at?: string
           updated_at?: string
@@ -127,18 +129,19 @@ export interface Database {
           purchase_doc?: string | null
           toll_doc?: string | null
           weight_report?: string | null
-          consolidated_doc?: string | null
           hsn_code?: string | null
           weight?: number
           profit?: number | null
           sale_cost?: number | null
           purchase_cost?: number | null
+          tds?: number | null
           sale_party_id?: string | null
           purchase_party_id?: string | null
           status?: 'payment_pending' | 'completed'
           debit_note?: string | null
           credit_note?: string | null
           classification_report?: string | null
+          consolidated_report_id?: string | null
           created_by?: string | null
           created_at?: string
           updated_at?: string

@@ -94,6 +94,7 @@ export async function PUT(
     if (updateData.sale_cost) updateData.sale_cost = parseFloat(updateData.sale_cost)
     if (updateData.purchase_cost) updateData.purchase_cost = parseFloat(updateData.purchase_cost)
     if (updateData.profit) updateData.profit = parseFloat(updateData.profit)
+    if (updateData.tds !== undefined) updateData.tds = parseFloat(updateData.tds) || 0
 
     // Update invoice
     const { data: invoice, error: updateError } = await supabase

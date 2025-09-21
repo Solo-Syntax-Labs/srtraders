@@ -19,7 +19,9 @@ import {
   Filter,
   Calendar,
   DollarSign,
-  Package
+  Package,
+  FileBarChart,
+  Download
 } from 'lucide-react'
 
 interface Invoice {
@@ -33,6 +35,7 @@ interface Invoice {
   purchase_party: { name: string } | null
   status: 'payment_pending' | 'completed'
   hsn_code: string | null
+  consolidated_report_id: string | null
   created_at: string
 }
 
@@ -106,6 +109,38 @@ export default function InvoicesPage() {
     } catch (error) {
       console.error('Error deleting invoice:', error)
       alert('Error deleting invoice')
+    }
+  }
+
+  const handleViewConsolidatedReport = async (invoiceId: string) => {
+    try {
+      window.open(`/api/invoices/${invoiceId}/consolidated-report?action=view`, '_blank')
+    } catch (error) {
+      console.error('Error viewing consolidated report:', error)
+      alert('Error viewing consolidated report')
+    }
+  }
+
+  const handleDownloadConsolidatedReport = async (invoiceId: string, invoiceNumber: string) => {
+    try {
+      const response = await fetch(`/api/invoices/${invoiceId}/consolidated-report?action=download`)
+      if (response.ok) {
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `consolidated_report_${invoiceNumber}.pdf`
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+      } else {
+        const error = await response.json()
+        alert(`Failed to download consolidated report: ${error.message}`)
+      }
+    } catch (error) {
+      console.error('Error downloading consolidated report:', error)
+      alert('Error downloading consolidated report')
     }
   }
 
@@ -267,7 +302,7 @@ export default function InvoicesPage() {
                     </div>
 
                     <div className="flex flex-col-reverse sm:flex-row sm:items-center space-y-reverse space-y-3 sm:space-y-0 sm:space-x-4">
-                      <div className="flex justify-between sm:justify-end space-x-2 order-2 sm:order-2">
+                      <div className="flex justify-between sm:justify-end space-x-1 sm:space-x-2 order-2 sm:order-2">
                         <Link href={`/dashboard/invoices/${invoice.id}`}>
                           <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
                             <Eye className="h-4 w-4 sm:mr-0" />
@@ -280,6 +315,18 @@ export default function InvoicesPage() {
                             <span className="ml-1 sm:hidden">Edit</span>
                           </Button>
                         </Link>
+                        {invoice.consolidated_report_id && (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleViewConsolidatedReport(invoice.id)}
+                            className="text-blue-600 hover:text-blue-700 flex-1 sm:flex-none"
+                            title="View Consolidated Report"
+                          >
+                            <FileBarChart className="h-4 w-4 sm:mr-0" />
+                            <span className="ml-1 sm:hidden">Report</span>
+                          </Button>
+                        )}
                         <Button 
                           variant="outline" 
                           size="sm"

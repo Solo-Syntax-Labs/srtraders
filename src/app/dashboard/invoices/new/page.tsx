@@ -27,7 +27,6 @@ interface InvoiceFormData {
   purchase_doc: string
   toll_doc: string
   weight_report: string
-  consolidated_doc: string
   hsn_code: string
   weight: string
   sale_cost: string
@@ -38,6 +37,7 @@ interface InvoiceFormData {
   debit_note: string
   credit_note: string
   classification_report: string
+  tds: string
 }
 
 interface UploadedDocument {
@@ -61,7 +61,6 @@ export default function NewInvoicePage() {
     purchase_doc: '',
     toll_doc: '',
     weight_report: '',
-    consolidated_doc: '',
     hsn_code: '',
     weight: '',
     sale_cost: '',
@@ -71,7 +70,8 @@ export default function NewInvoicePage() {
     status: 'payment_pending',
     debit_note: '',
     credit_note: '',
-    classification_report: ''
+    classification_report: '',
+    tds: ''
   })
   const [documents, setDocuments] = useState<UploadedDocument[]>([])
   const [errors, setErrors] = useState<Partial<InvoiceFormData>>({})
@@ -155,7 +155,6 @@ export default function NewInvoicePage() {
         'purchase': 'purchase_doc',
         'toll': 'toll_doc',
         'weight_report': 'weight_report',
-        'consolidated': 'consolidated_doc',
         'classification': 'classification_report'
       }
       
@@ -202,7 +201,6 @@ export default function NewInvoicePage() {
         'purchase': 'purchase_doc',
         'toll': 'toll_doc',
         'weight_report': 'weight_report',
-        'consolidated': 'consolidated_doc',
         'classification': 'classification_report'
       }
       
@@ -269,7 +267,6 @@ export default function NewInvoicePage() {
           purchase_doc: formData.purchase_doc || null,
           toll_doc: formData.toll_doc || null,
           weight_report: formData.weight_report || null,
-          consolidated_doc: formData.consolidated_doc || null,
           hsn_code: formData.hsn_code || null,
           weight: Number(formData.weight),
           sale_cost: formData.sale_cost ? Number(formData.sale_cost) : null,
@@ -280,6 +277,7 @@ export default function NewInvoicePage() {
           debit_note: formData.debit_note || null,
           credit_note: formData.credit_note || null,
           classification_report: formData.classification_report || null,
+          tds: formData.tds ? Number(formData.tds) : null,
         }),
       })
 
@@ -453,6 +451,21 @@ export default function NewInvoicePage() {
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="tds">TDS (%)</Label>
+                  <Input
+                    id="tds"
+                    name="tds"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max="100"
+                    value={formData.tds}
+                    onChange={handleInputChange}
+                    placeholder="0.00"
+                  />
+                </div>
+
                 {(formData.sale_cost || formData.purchase_cost) && (
                   <div className="space-y-2">
                     <Label>Calculated Profit</Label>
@@ -506,7 +519,6 @@ export default function NewInvoicePage() {
                   { key: 'purchase', label: 'Purchase Document', field: 'purchase_doc' },
                   { key: 'toll', label: 'Toll Document', field: 'toll_doc' },
                   { key: 'weight_report', label: 'Weight Report', field: 'weight_report' },
-                  { key: 'consolidated', label: 'Consolidated Document', field: 'consolidated_doc' },
                   { key: 'classification', label: 'Classification Report', field: 'classification_report' }
                 ].map((docConfig) => {
                   const existingDoc = documents.find(d => d.type === docConfig.key)

@@ -17,7 +17,9 @@ import {
   Package,
   Scale,
   Eye,
-  ExternalLink
+  ExternalLink,
+  FileBarChart,
+  Loader2
 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
@@ -29,6 +31,7 @@ interface Invoice {
   profit: number | null
   sale_cost: number | null
   purchase_cost: number | null
+  tds: number | null
   sale_party: { name: string } | null
   purchase_party: { name: string } | null
   status: 'payment_pending' | 'completed'
@@ -37,8 +40,8 @@ interface Invoice {
   purchase_doc: string | null
   toll_doc: string | null
   weight_report: string | null
-  consolidated_doc: string | null
   classification_report: string | null
+  consolidated_report_id: string | null
   debit_note: string | null
   credit_note: string | null
   created_at: string
@@ -59,6 +62,9 @@ interface Document {
   can_view: boolean
   view_url: string | null
   download_url: string | null
+  invoice_field_label?: string // Label for display (e.g., "Sale Document")
+  invoice_field_type?: string // Type from invoice field (e.g., "sale")
+  size_formatted?: string // Formatted file size
 }
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
@@ -68,6 +74,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   const [invoice, setInvoice] = useState<Invoice | null>(null)
   const [documents, setDocuments] = useState<Document[]>([])
   const [loading, setLoading] = useState(true)
+  const [consolidatedReportLoading, setConsolidatedReportLoading] = useState(false)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -78,9 +85,15 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   useEffect(() => {
     if (session && id) {
       fetchInvoice()
-      fetchDocuments()
     }
   }, [session, id])
+
+  // Fetch documents after invoice is loaded
+  useEffect(() => {
+    if (invoice) {
+      fetchDocuments()
+    }
+  }, [invoice])
 
   const fetchInvoice = async () => {
     try {
@@ -88,26 +101,64 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
       if (response.ok) {
         const data = await response.json()
         setInvoice(data.invoice)
+        return data.invoice // Return the updated invoice
       } else {
         router.push('/dashboard/invoices')
+        return null
       }
     } catch (error) {
       console.error('Error fetching invoice:', error)
       router.push('/dashboard/invoices')
+      return null
     } finally {
       setLoading(false)
     }
   }
 
   const fetchDocuments = async () => {
+    if (!invoice) return
+    
     try {
-      const response = await fetch('/api/documents')
-      if (response.ok) {
-        const data = await response.json()
-        setDocuments(data.documents || [])
+      // Collect all document IDs referenced by this invoice with their types
+      const documentRefs = [
+        { id: invoice.sale_doc, label: 'Sale Document', type: 'sale' },
+        { id: invoice.purchase_doc, label: 'Purchase Document', type: 'purchase' },
+        { id: invoice.toll_doc, label: 'Toll Document', type: 'toll' },
+        { id: invoice.weight_report, label: 'Weight Report', type: 'weight_report' },
+        { id: invoice.classification_report, label: 'Classification Report', type: 'classification' },
+        { id: invoice.consolidated_report_id, label: 'Consolidated Report', type: 'consolidated' }
+      ].filter(ref => ref.id) // Remove null/undefined values
+
+      if (documentRefs.length === 0) {
+        setDocuments([])
+        return
       }
+
+      // Fetch documents with specific IDs
+      const documentPromises = documentRefs.map(async (ref) => {
+        try {
+          const response = await fetch(`/api/documents/${ref.id}/metadata`)
+          if (response.ok) {
+            const data = await response.json()
+            return {
+              ...data.document,
+              invoice_field_label: ref.label,
+              invoice_field_type: ref.type
+            }
+          }
+          return null
+        } catch (error) {
+          console.error(`Error fetching document ${ref.id}:`, error)
+          return null
+        }
+      })
+
+      const fetchedDocuments = await Promise.all(documentPromises)
+      const validDocuments = fetchedDocuments.filter(Boolean)
+      
+      setDocuments(validDocuments)
     } catch (error) {
-      console.error('Error fetching documents:', error)
+      console.error('Error fetching invoice documents:', error)
     }
   }
 
@@ -178,6 +229,143 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     const sizes = ['Bytes', 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  const handleGenerateConsolidatedReport = async () => {
+    if (!invoice) return
+
+    setConsolidatedReportLoading(true)
+    try {
+      const response = await fetch(`/api/invoices/${invoice.id}/consolidated-report/generate`, {
+        method: 'POST',
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        alert(`Consolidated report generated successfully! Processed ${data.documentsProcessed} documents.`)
+        // Refresh invoice data to get the new consolidated_report_id
+        const updatedInvoice = await fetchInvoice()
+        // Explicitly refresh documents with the updated invoice to ensure the new report appears
+        if (updatedInvoice) {
+          setInvoice(updatedInvoice)
+        }
+      } else {
+        const error = await response.json()
+        alert(`Failed to generate consolidated report: ${error.message}`)
+      }
+    } catch (error) {
+      console.error('Error generating consolidated report:', error)
+      alert('Error generating consolidated report')
+    } finally {
+      setConsolidatedReportLoading(false)
+    }
+  }
+
+  const handleViewConsolidatedReport = async () => {
+    if (!invoice) return
+
+    try {
+      // First check if consolidated report exists
+      if (!invoice.consolidated_report_id) {
+        alert('No consolidated report found. Please generate one first.')
+        return
+      }
+
+      console.log('Opening consolidated report for invoice:', invoice.id, 'with report ID:', invoice.consolidated_report_id)
+      
+      const url = `/api/invoices/${invoice.id}/consolidated-report?action=view`
+      const newWindow = window.open(url, '_blank')
+      
+      if (!newWindow) {
+        alert('Pop-up blocked. Please allow pop-ups for this site and try again.')
+      }
+    } catch (error) {
+      console.error('Error viewing consolidated report:', error)
+      alert('Error viewing consolidated report: ' + (error as Error).message)
+    }
+  }
+
+  const handleDownloadConsolidatedReport = async () => {
+    if (!invoice) return
+
+    try {
+      // First check if consolidated report exists
+      if (!invoice.consolidated_report_id) {
+        alert('No consolidated report found. Please generate one first.')
+        return
+      }
+
+      console.log('Downloading consolidated report for invoice:', invoice.id, 'with report ID:', invoice.consolidated_report_id)
+      
+      const response = await fetch(`/api/invoices/${invoice.id}/consolidated-report?action=download`)
+      
+      if (response.ok) {
+        const blob = await response.blob()
+        console.log('Downloaded blob size:', blob.size, 'bytes')
+        
+        if (blob.size === 0) {
+          alert('Downloaded file is empty. There may be an issue with the report generation.')
+          return
+        }
+        
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `consolidated_report_${invoice.invoice_number}.pdf`
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+        
+        console.log('Download completed successfully')
+      } else {
+        const contentType = response.headers.get('content-type')
+        let errorMessage = 'Unknown error'
+        
+        if (contentType && contentType.includes('application/json')) {
+          const error = await response.json()
+          errorMessage = error.message || 'Failed to download consolidated report'
+        } else {
+          errorMessage = `Server returned ${response.status}: ${response.statusText}`
+        }
+        
+        console.error('Download failed:', response.status, response.statusText)
+        alert(`Failed to download consolidated report: ${errorMessage}`)
+      }
+    } catch (error) {
+      console.error('Error downloading consolidated report:', error)
+      alert('Error downloading consolidated report: ' + (error as Error).message)
+    }
+  }
+
+  const handleDeleteConsolidatedReport = async () => {
+    if (!invoice) return
+
+    if (!confirm('Are you sure you want to delete the consolidated report? You can regenerate it later.')) {
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/invoices/${invoice.id}/consolidated-report`, {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        alert('Consolidated report deleted successfully')
+        // Refresh invoice data to clear the consolidated_report_id
+        const updatedInvoice = await fetchInvoice()
+        // Explicitly refresh documents with the updated invoice to ensure the report is removed
+        if (updatedInvoice) {
+          setInvoice(updatedInvoice)
+        }
+      } else {
+        const error = await response.json()
+        alert(`Failed to delete consolidated report: ${error.message}`)
+      }
+    } catch (error) {
+      console.error('Error deleting consolidated report:', error)
+      alert('Error deleting consolidated report')
+    }
   }
 
   if (status === 'loading' || loading) {
@@ -311,6 +499,18 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
                         </div>
                       </div>
                     )}
+
+                    {invoice.tds !== null && invoice.tds > 0 && (
+                      <div className="flex items-center space-x-3">
+                        <Package className="h-5 w-5 text-blue-500" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-500">TDS</p>
+                          <p className="text-lg font-semibold text-blue-600">
+                            {invoice.tds}%
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -378,15 +578,22 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
                             <FileText className="h-5 w-5 text-blue-600" />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className="font-medium truncate">{doc.file_name}</p>
+                            <div className="flex items-center gap-2 mb-1">
+                              <p className="font-medium truncate">{doc.file_name}</p>
+                              {doc.invoice_field_label && (
+                                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full flex-shrink-0">
+                                  {doc.invoice_field_label}
+                                </span>
+                              )}
+                            </div>
                             <div className="flex flex-col space-y-1 sm:flex-row sm:flex-wrap sm:items-center sm:space-y-0 gap-x-4 text-xs sm:text-sm text-gray-600">
-                              <span className="flex-shrink-0">{formatFileSize(doc.file_size)}</span>
+                              <span className="flex-shrink-0">{doc.size_formatted || formatFileSize(doc.file_size)}</span>
                               <span className="capitalize flex-shrink-0">
-                                {doc.document_type.replace('_', ' ')} Document
+                                {doc.file_type?.replace('application/', '').replace('image/', '')}
                               </span>
                               <span className="flex-shrink-0">{new Date(doc.created_at).toLocaleDateString()}</span>
                               <span className="text-xs bg-gray-100 px-2 py-1 rounded inline-block">
-                                ID: {doc.document_id}
+                                ID: {doc.document_id.length > 15 ? `${doc.document_id.slice(0, 15)}...` : doc.document_id}
                               </span>
                             </div>
                           </div>
@@ -503,6 +710,76 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Share Invoice
                 </Button>
+              </CardContent>
+            </Card>
+
+            {/* Consolidated Report */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Consolidated Report</CardTitle>
+                <CardDescription>
+                  Generate a combined PDF report with all invoice documents
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {!invoice.consolidated_report_id ? (
+                  <Button 
+                    onClick={handleGenerateConsolidatedReport}
+                    disabled={consolidatedReportLoading}
+                    className="w-full justify-start"
+                  >
+                    {consolidatedReportLoading ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <FileBarChart className="h-4 w-4 mr-2" />
+                    )}
+                    {consolidatedReportLoading ? 'Generating...' : 'Generate Report'}
+                  </Button>
+                ) : (
+                  <>
+                    <Button 
+                      onClick={handleViewConsolidatedReport}
+                      variant="outline"
+                      className="w-full justify-start"
+                    >
+                      <Eye className="h-4 w-4 mr-2" />
+                      View Report
+                    </Button>
+                    <Button 
+                      onClick={handleDownloadConsolidatedReport}
+                      variant="outline"
+                      className="w-full justify-start"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download Report
+                    </Button>
+                    <div className="flex space-x-2">
+                      <Button 
+                        onClick={handleGenerateConsolidatedReport}
+                        disabled={consolidatedReportLoading}
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 justify-center"
+                      >
+                        {consolidatedReportLoading ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <FileBarChart className="h-4 w-4" />
+                        )}
+                        <span className="ml-1 sm:hidden">Regenerate</span>
+                      </Button>
+                      <Button 
+                        onClick={handleDeleteConsolidatedReport}
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 justify-center text-red-600 hover:text-red-700"
+                      >
+                        <FileText className="h-4 w-4" />
+                        <span className="ml-1 sm:hidden">Delete</span>
+                      </Button>
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
           </div>
