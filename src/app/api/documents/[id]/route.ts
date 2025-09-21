@@ -31,12 +31,14 @@ export async function GET(
     }
 
     // Get document details - try by UUID first, then by document_id
-    let { data: document, error: docError } = await supabase
+    const { data: documentData, error: docError } = await supabase
       .from('documents')
       .select('*')
       .eq('id', id)
       .eq('uploaded_by', (user as any).id)
       .single()
+    
+    let document = documentData
 
     // If not found by UUID, try by document_id (custom identifier)
     if (docError || !document) {
@@ -163,12 +165,14 @@ export async function DELETE(
     }
 
     // Get document details before deletion - try by UUID first, then by document_id
-    let { data: document, error: docError } = await supabase
+    const { data: documentData, error: docError } = await supabase
       .from('documents')
       .select('*')
       .eq('id', id)
       .eq('uploaded_by', (user as any).id)
       .single()
+    
+    let document = documentData
 
     // If not found by UUID, try by document_id (custom identifier)
     if (docError || !document) {
@@ -310,12 +314,14 @@ export async function PATCH(
     }
 
     // Find document first - try by UUID first, then by document_id
-    let { data: document, error: findError } = await supabase
+    const { data: documentData, error: findError } = await supabase
       .from('documents')
       .select('*')
       .eq('id', id)
       .eq('uploaded_by', (user as any).id)
       .single()
+    
+    let document = documentData
 
     // If not found by UUID, try by document_id (custom identifier)
     if (findError || !document) {

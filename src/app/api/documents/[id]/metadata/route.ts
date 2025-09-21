@@ -28,12 +28,14 @@ export async function GET(
     }
 
     // Get document metadata - try by UUID first, then by document_id
-    let { data: document, error: docError } = await supabase
+    const { data: documentData, error: docError } = await supabase
       .from('documents')
       .select('*')
       .eq('id', id)
       .eq('uploaded_by', (user as any).id)
       .single()
+    
+    let document = documentData
 
     // If not found by UUID, try by document_id (custom identifier)
     if (docError || !document) {
@@ -55,7 +57,7 @@ export async function GET(
     const { data: invoiceRefs, error: refError } = await supabase
       .from('invoices')
       .select('id, invoice_number')
-      .or(`sale_doc.eq.${document.document_id},purchase_doc.eq.${document.document_id},toll_doc.eq.${document.document_id},weight_report.eq.${document.document_id},classification_report.eq.${document.document_id},consolidated_report_id.eq.${document.document_id}`)
+      .or(`sale_doc.eq.${document!.document_id},purchase_doc.eq.${document!.document_id},toll_doc.eq.${document!.document_id},weight_report.eq.${document!.document_id},classification_report.eq.${document!.document_id},consolidated_report_id.eq.${document!.document_id}`)
 
     if (refError) {
       console.error('Error checking invoice references:', refError)

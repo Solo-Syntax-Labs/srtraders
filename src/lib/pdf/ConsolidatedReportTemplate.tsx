@@ -398,6 +398,7 @@ const ConsolidatedReportTemplate: React.FC<ConsolidatedReportTemplateProps> = ({
             <Image 
               style={styles.documentPage}
               src={`data:image/jpeg;base64,${doc.data}`}
+              alt={`${doc.type} document`}
             />
           </View>
           <View style={styles.footer}>
