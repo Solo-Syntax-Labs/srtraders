@@ -3,6 +3,7 @@
 import { ReactNode, useState } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
@@ -59,7 +60,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
           <div className="flex h-full flex-col">
-            <div className="flex h-16 items-center border-b px-6">
+            <div className="flex h-16 items-center gap-3 border-b px-6">
+              <div className="relative w-10 h-10">
+                <Image
+                  src="/srtraders-logo.png"
+                  alt="SRTraders Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <h1 className="text-xl font-bold">SRTraders</h1>
             </div>
             <nav className="flex-1 space-y-1 px-4 py-4">
@@ -89,7 +98,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Desktop sidebar */}
       <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div className="flex min-h-0 flex-1 flex-col border-r bg-white">
-          <div className="flex h-16 flex-shrink-0 items-center border-b px-6">
+          <div className="flex h-16 flex-shrink-0 items-center gap-3 border-b px-6">
+            <div className="relative w-10 h-10">
+              <Image
+                src="/srtraders-logo.png"
+                alt="SRTraders Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
             <h1 className="text-xl font-bold">SRTraders</h1>
           </div>
           <div className="flex flex-1 flex-col overflow-y-auto">

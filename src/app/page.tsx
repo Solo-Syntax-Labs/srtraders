@@ -86,8 +86,14 @@ export default function HomePage() {
           <div className="flex items-center justify-between h-16">
             {/* Logo and Title */}
             <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-500/50 group-hover:shadow-green-500/70 transition-shadow">
-                <span className="text-white text-lg sm:text-xl font-bold">SR</span>
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14">
+                <Image
+                  src="/srtraders-logo.png"
+                  alt="SRTraders Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
               <div>
                 <h1 className="text-white font-bold text-base sm:text-xl">SRTraders</h1>
