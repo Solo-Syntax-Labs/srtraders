@@ -55,4 +55,18 @@
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
   }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .bg-grid-white\/\[0\.05\] {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
 }
