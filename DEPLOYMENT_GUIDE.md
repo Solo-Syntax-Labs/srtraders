@@ -1,4 +1,4 @@
-# 🚀 Invoice Management - Vercel Deployment Guide
+# 🚀 SRTraders - Vercel Deployment Guide
 
 ## 📋 Prerequisites
 

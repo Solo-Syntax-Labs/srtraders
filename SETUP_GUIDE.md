@@ -1,6 +1,6 @@
 # Environment Variables Setup Guide
 
-This guide will walk you through obtaining all the required environment variables for the Invoice Management System.
+This guide will walk you through obtaining all the required environment variables for the SRTraders platform.
 
 ## 📋 Required Environment Variables
 

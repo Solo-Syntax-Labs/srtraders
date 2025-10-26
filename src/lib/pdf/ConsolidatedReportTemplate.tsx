@@ -357,7 +357,7 @@ const ConsolidatedReportTemplate: React.FC<ConsolidatedReportTemplateProps> = ({
         </View>
 
         <View style={styles.footer}>
-          <Text>Generated on {formatDate(new Date().toISOString())} | Invoice Management System</Text>
+          <Text>Generated on {formatDate(new Date().toISOString())} | SRTraders</Text>
         </View>
       </Page>
 

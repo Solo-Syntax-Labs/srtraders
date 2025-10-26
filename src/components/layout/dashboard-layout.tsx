@@ -60,7 +60,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <SheetContent side="left" className="w-64 p-0">
           <div className="flex h-full flex-col">
             <div className="flex h-16 items-center border-b px-6">
-              <h1 className="text-xl font-bold">Invoice Manager</h1>
+              <h1 className="text-xl font-bold">SRTraders</h1>
             </div>
             <nav className="flex-1 space-y-1 px-4 py-4">
               {navigation.map((item) => {
@@ -90,7 +90,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div className="flex min-h-0 flex-1 flex-col border-r bg-white">
           <div className="flex h-16 flex-shrink-0 items-center border-b px-6">
-            <h1 className="text-xl font-bold">Invoice Manager</h1>
+            <h1 className="text-xl font-bold">SRTraders</h1>
           </div>
           <div className="flex flex-1 flex-col overflow-y-auto">
             <nav className="flex-1 space-y-1 px-4 py-4">

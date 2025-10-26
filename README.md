@@ -1,10 +1,10 @@
-# Invoice Management System
+# SRTraders - Steel Trading Platform
 
-A comprehensive truck load invoice management system built with Next.js, featuring document storage, product tracking, and dual authentication methods.
+A comprehensive steel trading and scrap management platform built with Next.js, featuring invoice management, document storage, product tracking, and dual authentication methods.
 
 ## Features
 
-### 🚛 **Invoice Management**
+### 🚛 **SRTraders Management**
 - Create and manage truck load invoices
 - Track invoice status (pending, processing, completed, cancelled)
 - Store truck and driver information

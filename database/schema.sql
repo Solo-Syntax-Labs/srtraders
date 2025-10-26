@@ -1,4 +1,4 @@
--- Invoice Management System Database Schema
+-- SRTraders Database Schema
 
 -- Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
