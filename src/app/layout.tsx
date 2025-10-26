@@ -7,8 +7,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Invoice Management System",
-  description: "Manage truck load invoices, documents, and product information",
+  title: "SRTraders",
+  description: "Steel Trading Platform",
 };
 
 export default function RootLayout({

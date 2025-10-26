@@ -1056,7 +1056,6 @@ export default function HomePage() {
               <h4 className="text-white font-semibold text-sm sm:text-base mb-3 sm:mb-4">Quick Links</h4>
               <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                 <li><Link href="/auth/signin" className="hover:text-green-500 transition-colors">Sign In</Link></li>
-                <li><Link href="/auth/signup" className="hover:text-green-500 transition-colors">Sign Up</Link></li>
                 <li><Link href="#" className="hover:text-green-500 transition-colors">About Us</Link></li>
                 <li><Link href="#" className="hover:text-green-500 transition-colors">Contact</Link></li>
               </ul>
