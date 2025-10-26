@@ -167,31 +167,45 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
     setDocuments(prev => [...prev, uploadingDocument])
     
     try {
-      // Upload file immediately
+      // Upload file immediately using unified API (defaults to MEGA)
       const uploadFormData = new FormData()
       uploadFormData.append('file', file)
       uploadFormData.append('document_type', type)
 
-      const uploadResponse = await fetch('/api/upload/supabase', {
+      let uploadResponse = await fetch('/api/documents/', {
         method: 'POST',
         body: uploadFormData,
       })
 
+      // If MEGA fails, try Supabase as fallback
       if (!uploadResponse.ok) {
         const errorData = await uploadResponse.json()
-        throw new Error(errorData.message || 'Upload failed')
+        
+        if (errorData.message?.includes('MEGA')) {
+          console.warn('MEGA upload failed, trying Supabase fallback:', errorData.message)
+          
+          uploadResponse = await fetch('/api/documents/?storage=supabase', {
+            method: 'POST',
+            body: uploadFormData,
+          })
+        }
+        
+        if (!uploadResponse.ok) {
+          const fallbackError = await uploadResponse.json()
+          throw new Error(fallbackError.message || errorData.message || 'Upload failed')
+        }
       }
 
       const uploadResult = await uploadResponse.json()
       
-      // Update document with real data from server
+      // Update document with real data from server (unified API response)
       const finalDocument: UploadedDocument = {
-        document_id: uploadResult.document_id,
-        file_name: uploadResult.file_name,
-        file_size: uploadResult.file_size,
-        file_type: uploadResult.file_type,
+        document_id: uploadResult.document.document_id,
+        file_name: uploadResult.document.file_name,
+        file_size: uploadResult.document.file_size,
+        file_type: uploadResult.document.file_type,
         type,
-        storage_path: uploadResult.storage_path,
+        storage_path: uploadResult.document.storage_path,
         uploading: false
       }
 
@@ -211,7 +225,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       
       const fieldName = fieldMapping[type as keyof typeof fieldMapping]
       if (fieldName) {
-        setFormData(prev => ({ ...prev, [fieldName]: uploadResult.document_id }))
+        setFormData(prev => ({ ...prev, [fieldName]: uploadResult.document.document_id }))
       }
 
     } catch (error) {
@@ -596,6 +610,10 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
               <CardTitle>Document Management</CardTitle>
               <CardDescription>
                 Upload and manage documents for this invoice. Document IDs will be automatically assigned.
+                <br />
+                <span className="text-xs text-blue-600 font-medium">
+                  📁 New files will be stored securely using MEGA.nz (50GB free storage)
+                </span>
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

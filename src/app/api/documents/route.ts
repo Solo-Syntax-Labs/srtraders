@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
     
     const file = formData.get('file') as File
     const documentType = (formData.get('document_type') as string) || 'other'
-    const storageOption = searchParams.get('storage') || 'supabase' // Default to supabase
+    const storageOption = searchParams.get('storage') || process.env.DEFAULT_STORAGE || 'mega' // Default to mega
 
     if (!file) {
       return NextResponse.json(
@@ -211,6 +211,36 @@ export async function POST(request: NextRequest) {
           { status: 500 }
         )
       }
+    } else if (storageOption === 'mega') {
+      // MEGA Storage implementation
+      try {
+        const { MegaStorageClient } = await import('@/lib/storage/mega-client')
+        
+        // Check if MEGA is configured before creating client
+        if (!MegaStorageClient.isConfigured()) {
+          throw new Error('MEGA storage not configured. Please set MEGA_EMAIL/MEGA_PASSWORD or MEGA_RECOVERY_KEY')
+        }
+
+        const megaClient = new MegaStorageClient()
+        const fileBuffer = Buffer.from(await file.arrayBuffer())
+        const folderPath = `invoice-documents/${documentType}`
+        
+        const uploadResponse = await megaClient.upload(file.name, fileBuffer, folderPath)
+        
+        uploadResult = {
+          success: true,
+          path: uploadResponse.fileId, // Store MEGA file ID
+          storage_type: 'mega',
+          normalizedName: uploadResponse.normalizedName // Store normalized filename
+        }
+      } catch (uploadError) {
+        console.error('MEGA upload error:', uploadError)
+        
+        return NextResponse.json(
+          { message: `MEGA upload failed: ${uploadError}` },
+          { status: 500 }
+        )
+      }
     } else {
       // Add support for other storage options here (Google Drive, etc.)
       return NextResponse.json(
@@ -220,18 +250,29 @@ export async function POST(request: NextRequest) {
     }
 
     // Create document record
+    const documentRecord: any = {
+      document_id: documentId,
+      file_name: file.name, // Keep original filename for user display
+      file_size: file.size,
+      file_type: file.type,
+      storage_type: uploadResult.storage_type,
+      storage_path: uploadResult.path,
+      document_type: documentType,
+      uploaded_by: (user as any).id,
+    }
+
+    // Add MEGA-specific fields if using MEGA storage
+    if (uploadResult.storage_type === 'mega') {
+      documentRecord.mega_file_id = uploadResult.path
+      // Store the normalized filename for internal reference (optional field)
+      if (uploadResult.normalizedName) {
+        documentRecord.storage_filename = uploadResult.normalizedName
+      }
+    }
+
     const { data: document, error: docError } = await supabase
       .from('documents')
-      .insert([{
-        document_id: documentId,
-        file_name: file.name,
-        file_size: file.size,
-        file_type: file.type,
-        storage_type: uploadResult.storage_type,
-        storage_path: uploadResult.path,
-        document_type: documentType,
-        uploaded_by: (user as any).id,
-      }] as any)
+      .insert([documentRecord] as any)
       .select()
       .single()
 

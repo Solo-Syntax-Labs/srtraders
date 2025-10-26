@@ -118,6 +118,37 @@ export async function GET(
           { status: 500 }
         )
       }
+    } else if (document.storage_type === 'mega') {
+      try {
+        const { MegaStorageClient } = await import('@/lib/storage/mega-client')
+        const megaClient = new MegaStorageClient()
+        const buffer = await megaClient.download(document.storage_path) // storage_path contains MEGA file ID
+        
+        // Set appropriate headers
+        const headers: HeadersInit = {
+          'Content-Type': document.file_type || 'application/octet-stream',
+          'Content-Length': buffer.length.toString(),
+        }
+
+        if (action === 'download') {
+          headers['Content-Disposition'] = `attachment; filename="${document.file_name}"`
+        } else if (action === 'view') {
+          headers['Content-Disposition'] = 'inline'
+          
+          if (document.file_type?.startsWith('image/') || document.file_type === 'application/pdf') {
+            headers['Cache-Control'] = 'public, max-age=3600'
+          }
+        }
+
+        return new NextResponse(buffer, { headers })
+
+      } catch (storageError) {
+        console.error('MEGA download error:', storageError)
+        return NextResponse.json(
+          { message: 'Failed to download file from MEGA' },
+          { status: 500 }
+        )
+      }
     } else if (document.storage_type === 'google_drive') {
       // TODO: Implement Google Drive download logic
       return NextResponse.json(
@@ -236,6 +267,15 @@ export async function DELETE(
         await s3Client.send(deleteCommand)
       } catch (storageError) {
         console.error('Storage deletion error:', storageError)
+        // Continue with database deletion even if storage deletion fails
+      }
+    } else if (document.storage_type === 'mega') {
+      try {
+        const { MegaStorageClient } = await import('@/lib/storage/mega-client')
+        const megaClient = new MegaStorageClient()
+        await megaClient.delete(document.storage_path) // storage_path contains MEGA file ID
+      } catch (storageError) {
+        console.error('MEGA deletion error:', storageError)
         // Continue with database deletion even if storage deletion fails
       }
     }
