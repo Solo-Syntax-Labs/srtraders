@@ -582,6 +582,23 @@ export default function HomePage() {
                   />
                 </div>
               </a>
+
+              {/* Ferron Steels */}
+              <a 
+                href="http://www.ferronsteels.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center p-4 sm:p-6 md:p-8 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 cursor-pointer"
+              >
+                <div className="w-full h-16 sm:h-20 md:h-24 relative flex items-center justify-center">
+                  <Image
+                    src="/partners/ferronsteels.png"
+                    alt="Ferron Steels"
+                    fill
+                    className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300 p-2"
+                  />
+                </div>
+              </a>
             </div>
 
             <div className="text-center mt-8 sm:mt-12">
