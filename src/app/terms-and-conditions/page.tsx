@@ -21,7 +21,7 @@ export default function TermsAndConditionsPage() {
               </div>
               <div>
                 <h1 className="text-white font-bold text-base sm:text-xl">SRTraders</h1>
-                <p className="text-green-500 text-[10px] sm:text-xs">Steel Trading Platform</p>
+                <p className="text-green-500 text-[10px] sm:text-xs">Scrap Buyers & Dealers</p>
               </div>
             </Link>
             <Link href="/" className="flex items-center gap-2 text-gray-400 hover:text-green-500 transition-colors">
@@ -197,7 +197,13 @@ export default function TermsAndConditionsPage() {
                   <p className="text-gray-300"><span className="text-green-500">Phone:</span> +91 - 9092473805</p>
                   <p className="text-gray-300"><span className="text-green-500">Email:</span> <a href="mailto:info@Srtraders.co.in" className="hover:text-green-400 transition-colors">info@Srtraders.co.in</a></p>
                   <p className="text-gray-300 mt-2">
-                    <span className="text-green-500">Address:</span> S.No/11A, Utchir magaliamman kovil Street, Kayalpattinam - 628204, Tamil Nadu, India
+                    <span className="text-green-500">Address:</span> S R TRADERS, 111/A Utchini Magaliamman Kovil Street, Kayalpattinam, Tuticorin - 628204, Tamil Nadu, India
+                  </p>
+                  <p className="text-gray-400 text-sm mt-2">
+                    <span className="text-green-500">GSTIN/UIN:</span> 33APHPR5704E1Z2
+                  </p>
+                  <p className="text-gray-300 mt-2">
+                    <span className="text-green-500">Code:</span> 33
                   </p>
                 </div>
               </section>

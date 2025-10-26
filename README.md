@@ -1,4 +1,4 @@
-# SRTraders - Steel Trading Platform
+# SRTraders - Scrap Buyers & Dealers
 
 A comprehensive steel trading and scrap management platform built with Next.js, featuring invoice management, document storage, product tracking, and dual authentication methods.
 

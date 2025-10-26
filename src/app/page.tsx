@@ -10,7 +10,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
   FileText, 
   Truck, 
@@ -97,12 +96,20 @@ export default function HomePage() {
               </div>
               <div>
                 <h1 className="text-white font-bold text-base sm:text-xl">SRTraders</h1>
-                <p className="text-green-500 text-[10px] sm:text-xs">Steel Trading Platform</p>
+                <p className="text-green-500 text-[10px] sm:text-xs">Scrap Buyers & Dealers</p>
               </div>
             </Link>
 
             {/* Right Side Navigation */}
             <div className="flex items-center gap-2 sm:gap-4">
+              <Link href="/about">
+                <Button 
+                  variant="ghost" 
+                  className="text-gray-300 hover:text-white hidden md:inline-flex text-sm sm:text-base px-2 sm:px-4"
+                >
+                  About Us
+                </Button>
+              </Link>
               <Button 
                 variant="ghost" 
                 className="text-gray-300 hover:text-white hidden sm:inline-flex text-sm sm:text-base px-2 sm:px-4"
@@ -135,12 +142,11 @@ export default function HomePage() {
             {/* Main Heading */}
             <div className="text-center mb-6 sm:mb-8 md:mb-12">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-                Got Steel Scrap?
-                <span className="block text-green-500 mt-2 sm:mt-3">Trade it with us.</span>
+                SR Traders — 
+                <span className="block text-green-500 mt-2 sm:mt-3">Trusted Scrap Buyers in Tamil Nadu</span>
           </h1>
               <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto px-4">
-                Complete digital platform for steel traders, manufacturers, and logistics partners.
-                Join us in building a sustainable future through circular economy.
+                We buy, process, and supply all types of ferrous and non-ferrous scrap with transparent pricing, on-time pickup, and complete GST compliance.
               </p>
             </div>
 
@@ -157,8 +163,7 @@ export default function HomePage() {
                     <h3 className="text-green-400 font-bold text-[10px] sm:text-xs md:text-sm uppercase tracking-wider">Our Mission</h3>
                   </div>
                   <p className="text-gray-300 leading-relaxed text-xs sm:text-sm md:text-base pr-6 sm:pr-8 md:pr-0">
-                    "We endeavour to become a chemical powerhouse by growing in a globally competitive market 
-                    with a focus on the environment and community by optimising the use of all available resources."
+                    "To build a cleaner and more sustainable environment by offering efficient scrap collection and recycling solutions that benefit both our clients and the community."
                   </p>
                 </div>
               </div>
@@ -174,9 +179,7 @@ export default function HomePage() {
                     <h3 className="text-blue-400 font-bold text-[10px] sm:text-xs md:text-sm uppercase tracking-wider">Our Vision</h3>
                   </div>
                   <p className="text-gray-300 leading-relaxed text-xs sm:text-sm md:text-base pr-6 sm:pr-8 md:pr-0">
-                    To enhance stakeholder value by innovating and diversifying into synergistic businesses 
-                    while emphasising the <span className="text-green-400 font-semibold">4Rs (Reduce, Reuse, Recycle and Recover)</span> as 
-                    we continue to practice social responsibility.
+                    "To become Tamil Nadu's most reliable and eco-friendly scrap trading company — providing transparent pricing, fast logistics, and sustainable recycling for a better tomorrow."
                   </p>
                 </div>
               </div>
@@ -189,126 +192,38 @@ export default function HomePage() {
                 className="px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/20 hover:shadow-green-600/40 transition-all w-full sm:w-auto"
                 onClick={scrollToContact}
               >
-                Contact Us
+                Sell Your Scrap
               </Button>
-            <Link href="/auth/signin" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg bg-transparent border-green-500 text-green-500 hover:bg-green-500/10 w-full">
-                  For Business
+              <Button 
+                variant="outline"
+                size="lg" 
+                className="px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg bg-transparent border-green-500 text-green-500 hover:bg-green-500/10 w-full sm:w-auto"
+                onClick={scrollToContact}
+              >
+                Get a Quote
               </Button>
-            </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Ecosystem Section */}
+      {/* Company Introduction Section */}
       <section className="py-12 sm:py-16 md:py-20 bg-black">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8 sm:mb-12">
-            <p className="text-gray-400 text-xs sm:text-sm uppercase tracking-wider mb-2">Our Eco-System Towards</p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              <span className="text-green-500">Sustainability</span> & Circular Economy
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
+              About <span className="text-green-500">SR Traders</span>
             </h2>
-          </div>
-
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-            {/* Circular Diagram */}
-            <div className="flex justify-center">
-              <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px]">
-                {/* Center Circle */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 border-2 sm:border-3 md:border-4 border-green-600 flex items-center justify-center shadow-2xl shadow-green-500/20">
-                    <div className="text-center">
-                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1">SR</div>
-                      <div className="text-xs sm:text-sm text-green-500">Traders</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Orbiting Icons */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-green-600 flex items-center justify-center shadow-lg shadow-green-500/50">
-                  <Users className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
-                </div>
-                
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-green-600 flex items-center justify-center shadow-lg shadow-green-500/50">
-                  <Building2 className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
-                </div>
-                
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-green-600 flex items-center justify-center shadow-lg shadow-green-500/50">
-                  <Recycle className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
-                </div>
-                
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-green-600 flex items-center justify-center shadow-lg shadow-green-500/50">
-                  <Factory className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
-                </div>
-
-                <svg className="absolute inset-0 w-full h-full" style={{ transform: 'rotate(-90deg)' }} viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
-                  <circle
-                    cx="200"
-                    cy="200"
-                    r="140"
-                    fill="none"
-                    stroke="rgb(34 197 94)"
-                    strokeWidth="2"
-                    strokeDasharray="10 5"
-                    opacity="0.3"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Description */}
-            <div className="text-gray-300 space-y-4 sm:space-y-6 px-4 sm:px-0">
-              <p className="text-base sm:text-lg leading-relaxed">
-                <span className="text-green-500 font-semibold">SRTraders</span> with its deep understanding 
-                of the steel trading ecosystem has developed sustainable strategies & digital solutions to 
-                manage operations efficiently & cost-effectively.
+            <div className="text-gray-300 space-y-4 sm:space-y-6 text-base sm:text-lg leading-relaxed">
+              <p>
+                <span className="text-green-500 font-semibold">SR Traders</span> is a Tuticorin-based scrap trading company operating across Tamil Nadu. 
+                We specialize in buying and recycling <span className="text-white font-medium">metal scrap</span>, <span className="text-white font-medium">industrial scrap</span>, and <span className="text-white font-medium">machinery waste</span>, 
+                offering transparent rates and professional service for every transaction.
               </p>
-              <p className="text-base sm:text-lg leading-relaxed">
-                Contributing to closing the loop of the steel supply chain & achieving a{' '}
-                <span className="text-green-500 font-semibold">circular economy</span> while infusing{' '}
-                <span className="text-green-500 font-semibold">sustainability</span> into business practices.
-              </p>
-              <div className="pt-2 sm:pt-4">
-                <Button className="bg-green-600 hover:bg-green-700 text-white text-sm sm:text-base px-4 sm:px-6">
-                  Learn More →
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Target Audiences */}
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto mt-12 sm:mt-16 md:mt-20">
-            <div className="text-center">
-              <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-green-600/20 flex items-center justify-center border-2 border-green-600">
-                <Truck className="h-8 w-8 text-green-500" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Empowering</h3>
-              <h4 className="text-xl font-bold text-green-500 mb-3">Logistics Companies</h4>
-              <p className="text-gray-400 text-sm">
-                By providing comprehensive fleet management and real-time tracking to streamline operations.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-green-600/20 flex items-center justify-center border-2 border-green-600">
-                <Factory className="h-8 w-8 text-green-500" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Enabling</h3>
-              <h4 className="text-xl font-bold text-green-500 mb-3">Steel Manufacturers</h4>
-              <p className="text-gray-400 text-sm">
-                To manage production, track inventory, and coordinate shipments with integrated systems.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-green-600/20 flex items-center justify-center border-2 border-green-600">
-                <TrendingUp className="h-8 w-8 text-green-500" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Supporting</h3>
-              <h4 className="text-xl font-bold text-green-500 mb-3">Steel Traders</h4>
-              <p className="text-gray-400 text-sm">
-                With powerful tools for trading operations, pricing analytics, and secure documentation.
+              <p>
+                With years of experience, our company ensures <span className="text-green-500 font-medium">timely pickups</span>, 
+                proper weighing, and <span className="text-green-500 font-medium">instant payments</span> — making us a trusted partner 
+                for factories, industries, and local traders.
               </p>
             </div>
           </div>
@@ -357,393 +272,176 @@ export default function HomePage() {
               Our Services
             </h2>
             <p className="text-gray-400 text-sm sm:text-base md:text-lg">
-              Attaining <span className="text-green-500">sustainable solutions</span> with ease.
+              Comprehensive scrap trading solutions for all your needs.
             </p>
           </div>
 
           <div className="max-w-6xl mx-auto">
-            <Tabs defaultValue="all" className="w-full">
-              <div className="flex justify-center mb-8 sm:mb-12 overflow-x-auto">
-                <TabsList className="inline-flex bg-gray-900/50 border border-gray-800 p-1 gap-1 flex-nowrap">
-                  <TabsTrigger 
-                    value="all" 
-                    className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 text-xs sm:text-sm md:text-base font-medium text-gray-300 data-[state=active]:bg-green-600 data-[state=active]:text-white rounded transition-all whitespace-nowrap"
-                  >
-                    <span className="mr-1 sm:mr-2">☰</span>
-                    <span className="hidden sm:inline">All services</span>
-                    <span className="sm:hidden">All</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="individuals" 
-                    className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 text-xs sm:text-sm md:text-base font-medium text-gray-300 data-[state=active]:bg-green-600 data-[state=active]:text-white rounded transition-all whitespace-nowrap"
-                  >
-                    <span className="mr-1 sm:mr-2">👤</span>
-                    <span className="hidden sm:inline">For Individuals</span>
-                    <span className="sm:hidden">Individuals</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="organisations" 
-                    className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 text-xs sm:text-sm md:text-base font-medium text-gray-300 data-[state=active]:bg-green-600 data-[state=active]:text-white rounded transition-all whitespace-nowrap"
-                  >
-                    <span className="mr-1 sm:mr-2">🏢</span>
-                    <span className="hidden sm:inline">For Organisations</span>
-                    <span className="sm:hidden">Orgs</span>
-                  </TabsTrigger>
-                </TabsList>
+            <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 mb-12">
+
+              {/* Scrap Collection & Procurement */}
+              <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 sm:p-8 hover:border-green-600/50 transition-all">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/30">
+                    <Package className="w-6 h-6 sm:w-8 sm:h-8 text-green-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-white font-bold text-lg sm:text-xl mb-2 sm:mb-3">Scrap Collection & Procurement</h3>
+                    <p className="text-gray-400 text-sm sm:text-base">
+                      We buy ferrous and non-ferrous scrap directly from factories, construction sites, and local dealers with fair pricing and immediate payment.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              {/* All Services Tab */}
-              <TabsContent value="all">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                  {/* Scrap Collection */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center border border-red-500/30">
-                        <Package className="w-6 h-6 text-red-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Scrap Collection</h3>
-                        <p className="text-gray-400 text-sm">
-                          Digitised solution for the door-to-door free pickup of 40+ recyclables
-                        </p>
-                      </div>
-                    </div>
+              {/* Transportation & Logistics */}
+              <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 sm:p-8 hover:border-green-600/50 transition-all">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-500/10 rounded-full flex items-center justify-center border border-blue-500/30">
+                    <Truck className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
                   </div>
-
-                  {/* EPR Service */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center border border-blue-500/30">
-                        <FileText className="w-6 h-6 text-blue-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">EPR Service</h3>
-                        <p className="text-gray-400 text-sm">
-                          The Kabadiwala as a registered PRO, official collection & recycling partner helps in the compliance process of EPR.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Zero Waste Services */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/30">
-                        <Leaf className="w-6 h-6 text-green-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Zero waste services</h3>
-                        <p className="text-gray-400 text-sm">
-                          Serving the Institutes/Offices/Events in achieving their zero waste goals.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Zero Waste Society */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/30">
-                        <Home className="w-6 h-6 text-green-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Zero Waste Society</h3>
-                        <p className="text-gray-400 text-sm">
-                          Serving the Residential Societies in achieving their zero waste goals.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Shredding Service */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center border border-yellow-500/30">
-                        <FileStack className="w-6 h-6 text-yellow-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Shredding service</h3>
-                        <p className="text-gray-400 text-sm">
-                          Aiding Businesses in the safe & secure disposal of their confidential documents.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Dismantling Service */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-cyan-500/10 rounded-full flex items-center justify-center border border-cyan-500/30">
-                        <Building className="w-6 h-6 text-cyan-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Dismantling service</h3>
-                        <p className="text-gray-400 text-sm">
-                          Providing holistic approach to implement circular solutions to the scrap disposal.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Vehicle Scrapping Service */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center border border-purple-500/30">
-                        <Truck className="w-6 h-6 text-purple-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Vehicle Scrapping Service</h3>
-                        <p className="text-gray-400 text-sm">
-                          Assisting people in getting rid of their old vehicles sustainably
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Circular Economy Services */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center border border-orange-500/30">
-                        <Recycle className="w-6 h-6 text-orange-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Circular Economy Services</h3>
-                        <p className="text-gray-400 text-sm">
-                          Planning, designing, and successfully executing brand's CSR campaigns as per their objectives.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CSR Activity */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-pink-500/10 rounded-full flex items-center justify-center border border-pink-500/30">
-                        <Award className="w-6 h-6 text-pink-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">CRS Activity</h3>
-                        <p className="text-gray-400 text-sm">
-                          Planning, designing, and successfully executing brand's CSR campaigns as per their objectives.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Material Recovery Facility */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-indigo-500/10 rounded-full flex items-center justify-center border border-indigo-500/30">
-                        <Warehouse className="w-6 h-6 text-indigo-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Material Recovery Facility</h3>
-                        <p className="text-gray-400 text-sm">
-                          Collaborating to provide waste management services to ULB owned Material Recovery Facilities.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* IEC Activity */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-teal-500/10 rounded-full flex items-center justify-center border border-teal-500/30">
-                        <Target className="w-6 h-6 text-teal-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">IEC Activity</h3>
-                        <p className="text-gray-400 text-sm">
-                          Designing effective & innovative campaigns under IEC for bringing behavioral change in the masses.
-                        </p>
-                      </div>
-                    </div>
+                  <div className="flex-1">
+                    <h3 className="text-white font-bold text-lg sm:text-xl mb-2 sm:mb-3">Transportation & Logistics</h3>
+                    <p className="text-gray-400 text-sm sm:text-base">
+                      With GPS-enabled vehicles, we provide on-time collection and safe transportation for all types of scrap materials.
+                    </p>
                   </div>
                 </div>
-              </TabsContent>
+              </div>
 
-              {/* For Individuals Tab */}
-              <TabsContent value="individuals">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                  {/* Scrap Collection */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center border border-red-500/30">
-                        <Package className="w-6 h-6 text-red-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Scrap Collection</h3>
-                        <p className="text-gray-400 text-sm">
-                          Digitised solution for the door-to-door free pickup of 40+ recyclables
-                        </p>
-                      </div>
-                    </div>
+              {/* Processing & Sorting */}
+              <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 sm:p-8 hover:border-green-600/50 transition-all">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-orange-500/10 rounded-full flex items-center justify-center border border-orange-500/30">
+                    <Recycle className="w-6 h-6 sm:w-8 sm:h-8 text-orange-400" />
                   </div>
-
-                  {/* Zero Waste Society */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/30">
-                        <Home className="w-6 h-6 text-green-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Zero Waste Society</h3>
-                        <p className="text-gray-400 text-sm">
-                          Serving the Residential Societies in achieving their zero waste goals.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Vehicle Scrapping Service */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center border border-purple-500/30">
-                        <Truck className="w-6 h-6 text-purple-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Vehicle Scrapping Service</h3>
-                        <p className="text-gray-400 text-sm">
-                          Assisting people in getting rid of their old vehicles sustainably
-                        </p>
-                      </div>
-                    </div>
+                  <div className="flex-1">
+                    <h3 className="text-white font-bold text-lg sm:text-xl mb-2 sm:mb-3">Processing & Sorting</h3>
+                    <p className="text-gray-400 text-sm sm:text-base">
+                      All collected scrap is properly sorted, graded, and processed to meet industrial recycling standards.
+                    </p>
                   </div>
                 </div>
-              </TabsContent>
+              </div>
 
-              {/* For Organisations Tab */}
-              <TabsContent value="organisations">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                  {/* EPR Service */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center border border-blue-500/30">
-                        <FileText className="w-6 h-6 text-blue-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">EPR Service</h3>
-                        <p className="text-gray-400 text-sm">
-                          The Kabadiwala as a registered PRO, official collection & recycling partner helps in the compliance process of EPR.
-                        </p>
-                      </div>
-                    </div>
+              {/* Industrial & Bulk Supply */}
+              <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 sm:p-8 hover:border-green-600/50 transition-all">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-purple-500/10 rounded-full flex items-center justify-center border border-purple-500/30">
+                    <Factory className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
                   </div>
-
-                  {/* Shredding Service */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center border border-yellow-500/30">
-                        <FileStack className="w-6 h-6 text-yellow-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Shredding service</h3>
-                        <p className="text-gray-400 text-sm">
-                          Aiding Businesses in the safe & secure disposal of their confidential documents.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Circular Economy Services */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center border border-orange-500/30">
-                        <Recycle className="w-6 h-6 text-orange-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Circular Economy Services</h3>
-                        <p className="text-gray-400 text-sm">
-                          Planning, designing, and successfully executing brand's CSR campaigns as per their objectives.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Zero Waste Services */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/30">
-                        <Leaf className="w-6 h-6 text-green-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Zero waste services</h3>
-                        <p className="text-gray-400 text-sm">
-                          Serving the Institutes/Offices/Events in achieving their zero waste goals.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Dismantling Service */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-cyan-500/10 rounded-full flex items-center justify-center border border-cyan-500/30">
-                        <Building className="w-6 h-6 text-cyan-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Dismantling service</h3>
-                        <p className="text-gray-400 text-sm">
-                          Providing holistic approach to implement circular solutions to the scrap disposal.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CSR Activity */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-pink-500/10 rounded-full flex items-center justify-center border border-pink-500/30">
-                        <Award className="w-6 h-6 text-pink-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">CRS Activity</h3>
-                        <p className="text-gray-400 text-sm">
-                          Planning, designing, and successfully executing brand's CSR campaigns as per their objectives.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Material Recovery Facility */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-indigo-500/10 rounded-full flex items-center justify-center border border-indigo-500/30">
-                        <Warehouse className="w-6 h-6 text-indigo-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">Material Recovery Facility</h3>
-                        <p className="text-gray-400 text-sm">
-                          Collaborating to provide waste management services to ULB owned Material Recovery Facilities.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* IEC Activity */}
-                  <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 hover:border-green-600/50 transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-teal-500/10 rounded-full flex items-center justify-center border border-teal-500/30">
-                        <Target className="w-6 h-6 text-teal-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg mb-2">IEC Activity</h3>
-                        <p className="text-gray-400 text-sm">
-                          Designing effective & innovative campaigns under IEC for bringing behavioral change in the masses.
-                        </p>
-                      </div>
-                    </div>
+                  <div className="flex-1">
+                    <h3 className="text-white font-bold text-lg sm:text-xl mb-2 sm:mb-3">Industrial & Bulk Supply</h3>
+                    <p className="text-gray-400 text-sm sm:text-base">
+                      We supply graded scrap materials to foundries, smelting units, and recycling industries across Tamil Nadu.
+                    </p>
                   </div>
                 </div>
-              </TabsContent>
-            </Tabs>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-12 sm:py-16 md:py-20 bg-gray-900/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
+                Why Choose <span className="text-green-500">SR Traders</span>
+              </h2>
+              <p className="text-gray-400 text-sm sm:text-base md:text-lg">
+                Your trusted partner for all scrap trading needs
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {/* Feature 1 */}
+              <div className="flex items-start gap-4 p-4 sm:p-6 bg-black/30 rounded-lg border border-gray-800 hover:border-green-600/50 transition-all">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-600/20 flex items-center justify-center">
+                    <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1 text-sm sm:text-base">Transparent Digital Weighing</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">Accurate measurements you can trust</p>
+                </div>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="flex items-start gap-4 p-4 sm:p-6 bg-black/30 rounded-lg border border-gray-800 hover:border-green-600/50 transition-all">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-600/20 flex items-center justify-center">
+                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1 text-sm sm:text-base">Competitive Pricing</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">Best rates in the market</p>
+                </div>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="flex items-start gap-4 p-4 sm:p-6 bg-black/30 rounded-lg border border-gray-800 hover:border-green-600/50 transition-all">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-600/20 flex items-center justify-center">
+                    <Package className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1 text-sm sm:text-base">Immediate Payments</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">Cash, Bank Transfer, or UPI</p>
+                </div>
+              </div>
+
+              {/* Feature 4 */}
+              <div className="flex items-start gap-4 p-4 sm:p-6 bg-black/30 rounded-lg border border-gray-800 hover:border-green-600/50 transition-all">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-600/20 flex items-center justify-center">
+                    <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1 text-sm sm:text-base">Reliable Pickup Service</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">On-time collection guaranteed</p>
+                </div>
+              </div>
+
+              {/* Feature 5 */}
+              <div className="flex items-start gap-4 p-4 sm:p-6 bg-black/30 rounded-lg border border-gray-800 hover:border-green-600/50 transition-all">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-600/20 flex items-center justify-center">
+                    <FileCheck className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1 text-sm sm:text-base">GST-Compliant Invoices</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">Full documentation for every transaction</p>
+                </div>
+              </div>
+
+              {/* Feature 6 */}
+              <div className="flex items-start gap-4 p-4 sm:p-6 bg-black/30 rounded-lg border border-gray-800 hover:border-green-600/50 transition-all">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-600/20 flex items-center justify-center">
+                    <Leaf className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1 text-sm sm:text-base">Environmental Responsibility</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">Sustainable recycling practices</p>
+                </div>
+              </div>
+            </div>
 
             <div className="text-center mt-12">
               <Button 
                 className="bg-green-600 hover:bg-green-700 text-white px-8"
                 onClick={scrollToContact}
               >
-                Contact Us
+                Get a Quote
               </Button>
             </div>
           </div>
@@ -1033,9 +731,12 @@ export default function HomePage() {
                       <div>
                         <h3 className="font-semibold text-lg mb-1 text-white">Office</h3>
                         <p className="text-gray-300">
-                          S.No/11A, Utchir magaliamman kovil Street,<br />
-                          Kayalpattinam - 628204,<br />
-                          Tamil Nadu, India
+                          S R TRADERS<br />
+                          111/A Utchini Magaliamman Kovil Street,<br />
+                          Kayalpattinam, Tuticorin - 628204,<br />
+                          Tamil Nadu, India<br />
+                          <span className="text-xs text-gray-400 mt-1 block">GSTIN/UIN: 33APHPR5704E1Z2</span>
+                          <span className="text-xs text-gray-400 mt-1 block">Code: 33</span>
                         </p>
                       </div>
                     </div>
@@ -1062,8 +763,8 @@ export default function HomePage() {
               <h4 className="text-white font-semibold text-sm sm:text-base mb-3 sm:mb-4">Quick Links</h4>
               <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                 <li><Link href="/auth/signin" className="hover:text-green-500 transition-colors">Sign In</Link></li>
-                <li><Link href="#" className="hover:text-green-500 transition-colors">About Us</Link></li>
-                <li><Link href="#" className="hover:text-green-500 transition-colors">Contact</Link></li>
+                <li><Link href="/about" className="hover:text-green-500 transition-colors">About Us</Link></li>
+                <li><button onClick={scrollToContact} className="hover:text-green-500 transition-colors">Contact</button></li>
               </ul>
             </div>
 
