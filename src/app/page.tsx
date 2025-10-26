@@ -772,9 +772,7 @@ export default function HomePage() {
               <h4 className="text-white font-semibold text-sm sm:text-base mb-3 sm:mb-4">Services</h4>
               <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                 <li><Link href="#" className="hover:text-green-500 transition-colors">Scrap Collection</Link></li>
-                <li><Link href="#" className="hover:text-green-500 transition-colors">EPR Services</Link></li>
                 <li><Link href="#" className="hover:text-green-500 transition-colors">Zero Waste</Link></li>
-                <li><Link href="#" className="hover:text-green-500 transition-colors">CSR Activity</Link></li>
               </ul>
             </div>
 
