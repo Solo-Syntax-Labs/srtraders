@@ -132,12 +132,12 @@ export default function AboutPage() {
               <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
                 {/* S. Rajendran */}
                 <div className="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden hover:border-green-600/50 transition-all">
-                  <div className="relative h-64 sm:h-80 bg-gradient-to-b from-gray-800 to-gray-900">
+                  <div className="relative h-80 sm:h-96 bg-gradient-to-b from-gray-800 to-gray-900">
                     <Image
                       src="/team/rajendran.png"
                       alt="S. Rajendran - Chairman & Managing Director"
                       fill
-                      className="object-cover object-center"
+                      className="object-contain object-center"
                     />
                   </div>
                   <div className="p-6">
@@ -153,12 +153,12 @@ export default function AboutPage() {
 
                 {/* V. Sermadurai */}
                 <div className="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden hover:border-green-600/50 transition-all">
-                  <div className="relative h-64 sm:h-80 bg-gradient-to-b from-gray-800 to-gray-900">
+                  <div className="relative h-80 sm:h-96 bg-gradient-to-b from-gray-800 to-gray-900">
                     <Image
                       src="/team/sermadurai.png"
                       alt="V. Sermadurai - Founder's Guide & Business Mentor"
                       fill
-                      className="object-cover object-center"
+                      className="object-contain object-center"
                     />
                   </div>
                   <div className="p-6">
@@ -174,12 +174,12 @@ export default function AboutPage() {
 
                 {/* R Bala Subramanian */}
                 <div className="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden hover:border-green-600/50 transition-all">
-                  <div className="relative h-64 sm:h-80 bg-gradient-to-b from-gray-800 to-gray-900">
+                  <div className="relative h-80 sm:h-96 bg-gradient-to-b from-gray-800 to-gray-900">
                     <Image
                       src="/team/bala-subramanian.png"
                       alt="R Bala Subramanian - Managing Director"
                       fill
-                      className="object-cover object-center"
+                      className="object-contain object-center"
                     />
                   </div>
                   <div className="p-6">
@@ -194,12 +194,12 @@ export default function AboutPage() {
 
                 {/* R Ashwin */}
                 <div className="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden hover:border-green-600/50 transition-all">
-                  <div className="relative h-64 sm:h-80 bg-gradient-to-b from-gray-800 to-gray-900">
+                  <div className="relative h-80 sm:h-96 bg-gradient-to-b from-gray-800 to-gray-900">
                     <Image
                       src="/team/ashwin.png"
                       alt="R Ashwin - Independent Director and Legal"
                       fill
-                      className="object-cover object-center"
+                      className="object-contain object-center"
                     />
                   </div>
                   <div className="p-6">
