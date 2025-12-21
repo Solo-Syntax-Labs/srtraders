@@ -50,10 +50,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Document ID already exists' }, { status: 409 })
     }
 
-    // Generate unique file name
+    // Use documentId as storage filename to prevent conflicts
     const fileExtension = file.name.split('.').pop()
-    const uniqueFileName = `${uuidv4()}.${fileExtension}`
-    const filePath = `documents/${documentType}/${uniqueFileName}`
+    const storageFileName = `${documentId}.${fileExtension}`
+    const filePath = `documents/${documentType}/${storageFileName}`
 
     /* OPTION 1: Traditional Supabase Storage Client (commented out)
     const { data: uploadData, error: uploadError } = await supabase.storage

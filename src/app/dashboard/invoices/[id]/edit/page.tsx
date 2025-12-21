@@ -172,7 +172,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       uploadFormData.append('file', file)
       uploadFormData.append('document_type', type)
 
-      const uploadResponse = await fetch('/api/upload/supabase', {
+      const uploadResponse = await fetch('/api/documents', {
         method: 'POST',
         body: uploadFormData,
       })
@@ -184,14 +184,15 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
 
       const uploadResult = await uploadResponse.json()
       
-      // Update document with real data from server
+      // Update document with real data from server (unified API returns document object)
+      const doc = uploadResult.document
       const finalDocument: UploadedDocument = {
-        document_id: uploadResult.document_id,
-        file_name: uploadResult.file_name,
-        file_size: uploadResult.file_size,
-        file_type: uploadResult.file_type,
+        document_id: doc.document_id,
+        file_name: doc.file_name,
+        file_size: doc.file_size,
+        file_type: doc.file_type,
         type,
-        storage_path: uploadResult.storage_path,
+        storage_path: doc.storage_path,
         uploading: false
       }
 
@@ -211,7 +212,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       
       const fieldName = fieldMapping[type as keyof typeof fieldMapping]
       if (fieldName) {
-        setFormData(prev => ({ ...prev, [fieldName]: uploadResult.document_id }))
+        setFormData(prev => ({ ...prev, [fieldName]: doc.document_id }))
       }
 
     } catch (error) {
