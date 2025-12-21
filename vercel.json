@@ -12,5 +12,11 @@
   "regions": ["iad1"],
   "env": {
     "NEXTAUTH_URL": "https://invoice-management-wheat.vercel.app"
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/keep-alive",
+      "schedule": "0 0 */1 * *"
+    }
+  ]
 }
