@@ -1,6 +1,6 @@
 import { createServerClient } from '@/lib/supabase/server';
 import sharp from 'sharp';
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { StorageProvider } from '@/lib/storage/storageProvider';
 
 export interface ProcessedDocument {
   type: string;
@@ -89,10 +89,9 @@ export class DocumentProcessor {
     try {
       const supabase = await this.initSupabase();
       
-      // Get document metadata
       const { data: doc, error: docError } = await supabase
         .from('documents')
-        .select('file_name, file_type, storage_path, storage_type')
+        .select('file_name, file_type, storage_path, storage_type, mega_file_id, google_drive_id')
         .eq('document_id', documentId)
         .single();
 
@@ -101,55 +100,23 @@ export class DocumentProcessor {
         return null;
       }
 
-      // Handle different storage types
-      if (doc.storage_type === 'supabase') {
-        try {
-          // Configure S3 client for Supabase Storage
-          const s3Client = new S3Client({
-            forcePathStyle: true,
-            region: process.env.SUPABASE_STORAGE_REGION || 'us-east-1',
-            endpoint: `https://${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '').replace('.supabase.co', '.storage.supabase.co')}/storage/v1/s3`,
-            credentials: {
-              accessKeyId: process.env.SUPABASE_S3_ACCESS_KEY_ID!,
-              secretAccessKey: process.env.SUPABASE_S3_SECRET_ACCESS_KEY!,
-            }
-          });
+      try {
+        const downloadResult = await StorageProvider.download(
+          doc.storage_type,
+          doc.storage_path,
+          doc.file_name,
+          doc.file_type || 'application/octet-stream',
+          doc.mega_file_id,
+          doc.google_drive_id
+        );
 
-          // Download file from S3
-          const getCommand = new GetObjectCommand({
-            Bucket: 'documents',
-            Key: doc.storage_path,
-          });
-
-          const response = await s3Client.send(getCommand);
-          
-          if (!response.Body) {
-            console.error('File not found in storage:', doc.storage_path);
-            return null;
-          }
-
-          // Convert stream to buffer
-          const chunks: Uint8Array[] = [];
-          const stream = response.Body as any;
-          
-          for await (const chunk of stream) {
-            chunks.push(chunk);
-          }
-          
-          const buffer = Buffer.concat(chunks);
-
-          return {
-            buffer,
-            fileName: doc.file_name,
-            fileType: doc.file_type
-          };
-
-        } catch (storageError) {
-          console.error('Failed to download document from S3:', storageError);
-          return null;
-        }
-      } else {
-        console.error('Unsupported storage type:', doc.storage_type);
+        return {
+          buffer: downloadResult.buffer,
+          fileName: downloadResult.fileName,
+          fileType: downloadResult.fileType
+        };
+      } catch (storageError) {
+        console.error('Failed to download document:', storageError);
         return null;
       }
     } catch (error) {

@@ -174,9 +174,10 @@ export interface Database {
           file_name: string
           file_size: number | null
           file_type: string | null
-          storage_type: 'supabase' | 'google_drive'
+          storage_type: 'supabase' | 'google_drive' | 'mega'
           storage_path: string | null
           google_drive_id: string | null
+          mega_file_id: string | null
           document_type: 'sale' | 'purchase' | 'toll' | 'weight_report' | 'consolidated' | 'classification' | 'other'
           uploaded_by: string | null
           created_at: string
@@ -188,9 +189,10 @@ export interface Database {
           file_name: string
           file_size?: number | null
           file_type?: string | null
-          storage_type: 'supabase' | 'google_drive'
+          storage_type: 'supabase' | 'google_drive' | 'mega'
           storage_path?: string | null
           google_drive_id?: string | null
+          mega_file_id?: string | null
           document_type: 'sale' | 'purchase' | 'toll' | 'weight_report' | 'consolidated' | 'classification' | 'other'
           uploaded_by?: string | null
           created_at?: string
@@ -202,9 +204,10 @@ export interface Database {
           file_name?: string
           file_size?: number | null
           file_type?: string | null
-          storage_type?: 'supabase' | 'google_drive'
+          storage_type?: 'supabase' | 'google_drive' | 'mega'
           storage_path?: string | null
           google_drive_id?: string | null
+          mega_file_id?: string | null
           document_type?: 'sale' | 'purchase' | 'toll' | 'weight_report' | 'consolidated' | 'classification' | 'other'
           uploaded_by?: string | null
           created_at?: string

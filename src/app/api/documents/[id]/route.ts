@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth/config'
 import { createServerClient } from '@/lib/supabase/server'
-import { S3Client, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import { StorageProvider } from '@/lib/storage/storageProvider'
 
 export async function GET(
   request: NextRequest,
@@ -56,78 +56,38 @@ export async function GET(
       document = documentByCustomId
     }
 
-    // Handle different storage types
-    if (document.storage_type === 'supabase') {
-      try {
-        // Configure S3 client for Supabase Storage
-        const s3Client = new S3Client({
-          forcePathStyle: true,
-          region: process.env.SUPABASE_STORAGE_REGION || 'us-east-1',
-          endpoint: `https://${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '').replace('.supabase.co', '.storage.supabase.co')}/storage/v1/s3`,
-          credentials: {
-            accessKeyId: process.env.SUPABASE_S3_ACCESS_KEY_ID!,
-            secretAccessKey: process.env.SUPABASE_S3_SECRET_ACCESS_KEY!,
-          }
-        })
-
-        // Download file from S3
-        const getCommand = new GetObjectCommand({
-          Bucket: 'documents',
-          Key: document.storage_path,
-        })
-
-        const response = await s3Client.send(getCommand)
-        
-        if (!response.Body) {
-          return NextResponse.json({ message: 'File not found in storage' }, { status: 404 })
-        }
-
-        // Convert stream to buffer
-        const chunks: Uint8Array[] = []
-        const stream = response.Body as any
-        
-        for await (const chunk of stream) {
-          chunks.push(chunk)
-        }
-        
-        const buffer = Buffer.concat(chunks)
-
-        // Set appropriate headers
-        const headers: HeadersInit = {
-          'Content-Type': document.file_type || 'application/octet-stream',
-          'Content-Length': buffer.length.toString(),
-        }
-
-        if (action === 'download') {
-          headers['Content-Disposition'] = `attachment; filename="${document.file_name}"`
-        } else if (action === 'view') {
-          headers['Content-Disposition'] = 'inline'
-          
-          // For images and PDFs, set appropriate headers for inline viewing
-          if (document.file_type?.startsWith('image/') || document.file_type === 'application/pdf') {
-            headers['Cache-Control'] = 'public, max-age=3600'
-          }
-        }
-
-        return new NextResponse(buffer, { headers })
-
-      } catch (storageError) {
-        console.error('Storage download error:', storageError)
-        return NextResponse.json(
-          { message: 'Failed to download file from storage' },
-          { status: 500 }
-        )
-      }
-    } else if (document.storage_type === 'google_drive') {
-      // TODO: Implement Google Drive download logic
-      return NextResponse.json(
-        { message: 'Google Drive download not yet implemented' },
-        { status: 501 }
+    try {
+      const downloadResult = await StorageProvider.download(
+        document.storage_type,
+        document.storage_path,
+        document.file_name,
+        document.file_type || 'application/octet-stream',
+        document.mega_file_id,
+        document.google_drive_id
       )
-    } else {
+
+      const headers: HeadersInit = {
+        'Content-Type': downloadResult.fileType,
+        'Content-Length': downloadResult.buffer.length.toString(),
+      }
+
+      if (action === 'download') {
+        headers['Content-Disposition'] = `attachment; filename="${downloadResult.fileName}"`
+      } else if (action === 'view') {
+        headers['Content-Disposition'] = 'inline'
+        
+        if (downloadResult.fileType?.startsWith('image/') || downloadResult.fileType === 'application/pdf') {
+          headers['Cache-Control'] = 'public, max-age=3600'
+        }
+      }
+
+      return new NextResponse(downloadResult.buffer, { headers })
+
+    } catch (storageError) {
+      console.error('Storage download error:', storageError)
       return NextResponse.json(
-        { message: 'Unsupported storage type' },
-        { status: 400 }
+        { message: `Failed to download file: ${storageError}` },
+        { status: 500 }
       )
     }
 
@@ -215,29 +175,15 @@ export async function DELETE(
       )
     }
 
-    // Delete from storage first
-    if (document.storage_type === 'supabase') {
-      try {
-        const s3Client = new S3Client({
-          forcePathStyle: true,
-          region: process.env.SUPABASE_STORAGE_REGION || 'us-east-1',
-          endpoint: `https://${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '').replace('.supabase.co', '.storage.supabase.co')}/storage/v1/s3`,
-          credentials: {
-            accessKeyId: process.env.SUPABASE_S3_ACCESS_KEY_ID!,
-            secretAccessKey: process.env.SUPABASE_S3_SECRET_ACCESS_KEY!,
-          }
-        })
-
-        const deleteCommand = new DeleteObjectCommand({
-          Bucket: 'documents',
-          Key: document.storage_path,
-        })
-
-        await s3Client.send(deleteCommand)
-      } catch (storageError) {
-        console.error('Storage deletion error:', storageError)
-        // Continue with database deletion even if storage deletion fails
-      }
+    try {
+      await StorageProvider.delete(
+        document.storage_type,
+        document.storage_path,
+        document.mega_file_id,
+        document.google_drive_id
+      )
+    } catch (storageError) {
+      console.error('Storage deletion error:', storageError)
     }
 
     // Delete from database using the actual document UUID
